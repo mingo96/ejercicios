@@ -78,7 +78,6 @@ Actividad 3:
   cuando se pulse el botón Decrementar.
 - Evitar que nos pasemos de los márgenes de su propiedad progressStatus (0-1)
 */
-@Preview(showBackground = true)
 @Composable
 fun Actividad3() {
     var progress by rememberSaveable {
@@ -112,16 +111,26 @@ Actividad 4:
 Sitúa el TextField en el centro de la pantalla y haz que reemplace el valor de una coma por un punto
 y que no deje escribir más de un punto decimal...
 */
+@Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Actividad4() {
     var myVal by rememberSaveable { mutableStateOf("") }
 
+    Column (
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
     TextField(
         value = myVal,
-        onValueChange = { myVal = it },
-        label = { Text(text = "Importe") }
-    )
+        onValueChange = {
+                        if(it.replace(",", ".").count { it.toString()=="." } <2)
+                            myVal = it.replace(",", ".")
+                        },
+        label = { Text(text = "Importe") },
+        )
+    }
 }
 
 
