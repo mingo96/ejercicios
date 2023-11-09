@@ -56,7 +56,8 @@ fun Actividad1() {
         }
 
         Button(
-            onClick = { showLoading = !showLoading }
+            onClick = { showLoading = !showLoading },
+            modifier = if(showLoading) Modifier.padding(top = 30.dp) else Modifier
         ) {
             Text(text = if(!showLoading) "Cargar perfil" else "cancelar")
         }
