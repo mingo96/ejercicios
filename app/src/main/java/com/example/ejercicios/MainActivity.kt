@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.dam23_24.composecatalogolayout.screens.Actividad1
+import com.dam23_24.composecatalogolayout.screens.Actividad3
 import com.example.ejercicios.ui.theme.EjerciciosTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,7 +19,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             EjerciciosTheme {
-                Actividad1()
+                Actividad3()
             }
         }
     }

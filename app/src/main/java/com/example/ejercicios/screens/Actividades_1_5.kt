@@ -30,7 +30,6 @@ Actividad 1:
 Hacer que el texto del botón muestre "Cargar perfil", pero cambie a "Cancelar"
 cuando se muestre la línea de progreso... Cuando pulsemos "Cancelar" vuelve al texto por defecto.
 */
-@Preview(showBackground = true)
 @Composable
 fun Actividad1() {
     var showLoading by rememberSaveable { mutableStateOf(false) }
@@ -79,20 +78,28 @@ Actividad 3:
   cuando se pulse el botón Decrementar.
 - Evitar que nos pasemos de los márgenes de su propiedad progressStatus (0-1)
 */
+@Preview(showBackground = true)
 @Composable
 fun Actividad3() {
+    var progress by rememberSaveable {
+        mutableStateOf(0.0f)
+    }
     Column(
-        Modifier.fillMaxSize(),
+        Modifier
+            .fillMaxSize()
+            .padding(bottom = 15.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LinearProgressIndicator(progress = 0f)
+        LinearProgressIndicator(progress = progress)
 
-        Row(Modifier.fillMaxWidth()) {
-            Button(onClick = { /* TODO */ }) {
+        Row(Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center) {
+            Button(onClick = { if(progress<1.0f)progress+=0.1f },
+                modifier = Modifier.padding(end = 10.dp)) {
                 Text(text = "Incrementar")
             }
-            Button(onClick = { /* TODO */ }) {
+            Button(onClick = { if(progress>0f)progress-=0.1f }) {
                 Text(text = "Reducir")
             }
         }
