@@ -1,6 +1,7 @@
 package com.dam23_24.composecatalogolayout.screens
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +22,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
@@ -153,6 +156,9 @@ fun Actividad5() {
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun actividadInterna(onAccess: () -> String, onEdit: (String) -> Unit){
+    var focused by rememberSaveable {
+        mutableStateOf(false)
+    }
 
     Column (
         modifier = Modifier.fillMaxSize(),
@@ -160,11 +166,22 @@ fun actividadInterna(onAccess: () -> String, onEdit: (String) -> Unit){
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         OutlinedTextField(
-            modifier = Modifier.padding(all=15.dp).border(5.dp, color = Color.Black),
+            modifier = Modifier
+                .padding(all = 15.dp)
+                .focusable(true)
+                .onFocusChanged {
+                    focused =!focused
+                }
+                .border(5.dp, color = if(focused)Color.Blue else Color.Black),
             value = onAccess(),
             onValueChange = {
-                if(it.replace(",", ".").count { it.toString()=="." } <2)
-                    onEdit( it.replace(",", "."))
+                val cambiado = it.replace(",", ".")
+                if(cambiado.count { it.toString()=="." } <2 ) {
+                    try {
+                        cambiado.toFloat()
+                        onEdit(it.replace(",", "."))
+                    }catch (e:Exception){}
+                }
             },
             label = { Text(text = "Importe") },
         )
