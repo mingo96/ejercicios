@@ -1,5 +1,6 @@
 package com.dam23_24.composecatalogolayout.screens
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,7 +14,6 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -111,7 +112,6 @@ Actividad 4:
 Sitúa el TextField en el centro de la pantalla y haz que reemplace el valor de una coma por un punto
 y que no deje escribir más de un punto decimal...
 */
-@Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Actividad4() {
@@ -141,14 +141,32 @@ al que debes añadir un padding alrededor de 15 dp y establecer colores diferent
 cuando tenga el foco y no lo tenga.
 A nivel funcional no permitas que se introduzcan caracteres que invaliden un número decimal.
 */
-@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
 @Composable
 fun Actividad5() {
     var myVal by rememberSaveable { mutableStateOf("") }
+    val onAcces= { myVal }
+    val onEdit= {it:String -> myVal = it }
+    actividadInterna(onAcces,onEdit)
+}
 
-    OutlinedTextField(
-        value = myVal,
-        onValueChange = { myVal = it },
-        label = { Text(text = "Importe") }
-    )
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun actividadInterna(onAccess: () -> String, onEdit: (String) -> Unit){
+
+    Column (
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        OutlinedTextField(
+            modifier = Modifier.padding(all=15.dp).border(5.dp, color = Color.Black),
+            value = onAccess(),
+            onValueChange = {
+                if(it.replace(",", ".").count { it.toString()=="." } <2)
+                    onEdit( it.replace(",", "."))
+            },
+            label = { Text(text = "Importe") },
+        )
+    }
 }
