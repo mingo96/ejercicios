@@ -128,8 +128,9 @@ fun Actividad4() {
     TextField(
         value = myVal,
         onValueChange = {
-                        if(it.replace(",", ".").count { it.toString()=="." } <2)
-                            myVal = it.replace(",", ".")
+                        val cambiado = it.replace(",", ".")
+                        if(cambiado.count { it.toString()=="." } <2)
+                            myVal = cambiado
                         },
         label = { Text(text = "Importe") },
         )
