@@ -150,7 +150,15 @@ A nivel funcional no permitas que se introduzcan caracteres que invaliden un nú
 fun Actividad5() {
     var myVal by rememberSaveable { mutableStateOf("") }
     val onAcces= { myVal }
-    val onEdit= {it:String -> myVal = it }
+    val onEdit= {it:String ->
+        val cambiado = it.replace(",", ".")
+        if(cambiado.count { it.toString()=="." } <2 ) {
+            try {
+                cambiado.toFloat()
+                myVal = it.replace(",", ".")
+            }catch (e:Exception){}
+        }
+    }
     actividadInterna(onAcces,onEdit)
 }
 
@@ -176,13 +184,7 @@ fun actividadInterna(onAccess: () -> String, onEdit: (String) -> Unit){
                 .border(5.dp, color = if(focused)Color.Blue else Color.Black),
             value = onAccess(),
             onValueChange = {
-                val cambiado = it.replace(",", ".")
-                if(cambiado.count { it.toString()=="." } <2 ) {
-                    try {
-                        cambiado.toFloat()
-                        onEdit(it.replace(",", "."))
-                    }catch (e:Exception){}
-                }
+                onEdit(it)
             },
             label = { Text(text = "Importe") },
         )
